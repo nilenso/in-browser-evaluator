@@ -23,8 +23,9 @@
     (cljs/eval-str compile-state-ref (str "(ns " (ns-from-id id) ")" source) "[test]" options f)))
 
 (def tests
-  [{:prompt "The function foo exists"
-    :assert '(resolve 'foo)}])
+  [{:prompt "The function foo exists" :assert '(resolve 'foo)}
+   {:prompt "Passes for input: 5 5 1 2 N LMLMLMLMM" :assert '(= (navigate "5 5 1 2 N LMLMLMLMM")
+                                                                [1 3 "N"])}])
 
 (defn run-tests [id]
   (doall

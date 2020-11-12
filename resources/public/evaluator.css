@@ -1,0 +1,100 @@
+html {
+  border-top: 4px solid #f8337d;
+}
+.red {
+  color: #f8337d;
+}
+
+.green {
+  color: #339933;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.page {
+  margin: 0 10%;
+  font-family: 'PT Mono', monospace;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header img {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.navigation {
+  margin-bottom: 20px;
+}
+
+.panes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.react-codemirror2 {
+  width: 45%;
+}
+
+.results {
+  width: 50%;
+}
+
+.results li {
+  margin: 10px 0;
+}
+
+.eval-result {
+  margin-bottom: 40px;
+}
+
+.progress-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.progress-bar p {
+  margin: 0;
+  padding: 0;
+}
+
+.fade-in {
+  animation: fadeIn ease 2s;
+  -webkit-animation: fadeIn ease 2s;
+  -moz-animation: fadeIn ease 2s;
+  -o-animation: fadeIn ease 2s;
+  -ms-animation: fadeIn ease 2s;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
