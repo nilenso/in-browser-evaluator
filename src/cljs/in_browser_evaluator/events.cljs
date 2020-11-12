@@ -16,6 +16,6 @@
    (assoc db :active-panel active-panel)))
 
 (re-frame/reg-event-db
- ::set-re-pressed-example
+ :set-editor-content
  (fn [db [_ value]]
-   (assoc db :re-pressed-example value)))
+   (assoc db :editor-content value)))

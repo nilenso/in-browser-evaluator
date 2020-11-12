@@ -2,7 +2,6 @@
   (:require
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
-   [re-pressed.core :as rp]
    [in-browser-evaluator.events :as events]
    [in-browser-evaluator.routes :as routes]
    [in-browser-evaluator.views :as views]
@@ -23,6 +22,5 @@
 (defn init []
   (routes/app-routes)
   (re-frame/dispatch-sync [::events/initialize-db])
-  (re-frame/dispatch-sync [::rp/add-keyboard-event-listener "keydown"])
   (dev-setup)
   (mount-root))

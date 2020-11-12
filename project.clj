@@ -9,8 +9,7 @@
                  [re-frame "1.1.2"]
                  [day8.re-frame/tracing "0.6.0"]
                  [clj-commons/secretary "1.2.4"]
-                 [cider/cider-nrepl "0.25.4"]
-                 [re-pressed "0.3.1"]]
+                 [cider/cider-nrepl "0.25.4"]]
 
   :plugins [[lein-shadow "0.3.1"]
 
