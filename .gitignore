@@ -1,5 +1,6 @@
 /out/
 /resources/public/js/compiled/
+/resources/public/bootstrap/
 /target/
 /*-init.clj
 /*.log

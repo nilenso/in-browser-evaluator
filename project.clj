@@ -29,21 +29,29 @@
 
   :shadow-cljs {:nrepl {:port 8777}
 
-                :builds {:app {:target :browser
-                               :output-dir "resources/public/js/compiled"
-                               :asset-path "/js/compiled"
-                               :modules {:app {:init-fn in-browser-evaluator.core/init
-                                               :preloads [devtools.preload
-                                                          day8.re-frame-10x.preload]}}
-                               :dev {:compiler-options {:closure-defines {re-frame.trace.trace-enabled? true
-                                                                          day8.re-frame.tracing.trace-enabled? true}}}
-                               :release {:build-options
-                                         {:ns-aliases
-                                          {day8.re-frame.tracing day8.re-frame.tracing-stubs}}}
+                :builds {:app
+                         {:target :browser
+                          :output-dir "resources/public/js/compiled"
+                          :asset-path "/js/compiled"
+                          :modules {:app {:init-fn in-browser-evaluator.core/init
+                                          :preloads [devtools.preload
+                                                     day8.re-frame-10x.preload]}}
+                          :dev {:compiler-options {:closure-defines {re-frame.trace.trace-enabled? true
+                                                                     day8.re-frame.tracing.trace-enabled? true}}}
+                          :release {:build-options
+                                    {:ns-aliases
+                                     {day8.re-frame.tracing day8.re-frame.tracing-stubs}}}
 
-                               :devtools {:http-root "resources/public"
-                                          :http-port 8280
-                                          }}
+                          :devtools {:http-root "resources/public"
+                                     :http-port 8280}}
+
+                         :bootstrap-support
+                         {:target :bootstrap
+                          :output-dir "resources/public/bootstrap"
+                          :exclude #{cljs.js}
+                          :entries [cljs.js]
+                          :macros []}
+
                          :browser-test
                          {:target :browser-test
                           :ns-regexp "-test$"
@@ -67,17 +75,17 @@
                             ["shell" "echo" "\"DEPRECATED: Please use lein watch instead.\""]
                             ["watch"]]
             "watch"        ["with-profile" "dev" "do"
-                            ["shadow" "watch" "app" "browser-test" "karma-test"]]
+                            ["shadow" "watch" "app" "bootstrap-support" "browser-test" "karma-test"]]
 
             "prod"         ["do"
                             ["shell" "echo" "\"DEPRECATED: Please use lein release instead.\""]
                             ["release"]]
 
             "release"      ["with-profile" "prod" "do"
-                            ["shadow" "release" "app"]]
+                            ["shadow" "release" "app" "bootstrap-support"]]
 
             "build-report" ["with-profile" "prod" "do"
-                            ["shadow" "run" "shadow.cljs.build-report" "app" "target/build-report.html"]
+                            ["shadow" "run" "shadow.cljs.build-report" "app" "bootstrap-support" "target/build-report.html"]
                             ["shell" "open" "target/build-report.html"]]
 
             "karma"        ["do"

@@ -16,3 +16,8 @@
  ::editor-content
  (fn [db _]
    (:editor-content db)))
+
+(re-frame/reg-sub
+ ::eval-result
+ (fn [db _]
+   (:eval-result db)))

@@ -7,21 +7,31 @@
    [reagent.core :as reagent]
    [cljs.reader :as r]))
 
+(defn editor []
+  (let [content (re-frame/subscribe [::subs/editor-content])]
+    [:> (:Controlled (js->clj codemirror :keywordize-keys true))
+     {:value @content
+      :options (clj->js {:mode "clojure"
+                         :lineNumbers true
+                         :extraKeys {"Ctrl-Enter" #(re-frame/dispatch [:eval])
+                                     "Cmd-Enter" #(re-frame/dispatch [:eval])}})
+      :on-before-change (fn [_ _ value]
+                          (re-frame/dispatch [:set-editor-content value]))
+      :on-change (fn [ed arg2 value]
+                   #_(js/alert (eval (r/read-string value)))
+                   nil)}]))
+
 (defn home-panel []
-  (let [content (re-frame/subscribe [::subs/editor-content])
-        textarea-obj (atom nil)]
+  (let [eval-result (re-frame/subscribe [::subs/eval-result])]
     [:div
-     [:h1 (str "Hello from " ". This is the Home Page.")]
-     [:a {:href "#/about"} "go to About Page"]
-     [:> (:Controlled (js->clj codemirror :keywordize-keys true))
-      {:value @content
-       :options (clj->js {:mode "clojure"
-                          :lineNumbers true})
-       :on-before-change (fn [_ _ value]
-                           (re-frame/dispatch [:set-editor-content value]))
-       :on-change (fn [ed arg2 value]
-                    #_(js/alert (eval (r/read-string value)))
-                    nil)}]]))
+     [:h1 "Mars Rover Evaluator"]
+     #_[:a {:href "#/about"} "go to About Page"]
+     [:h2 "Write your code here"]
+     [:button {:on-click #(re-frame/dispatch [:eval])} "Eval"]
+     [editor]
+     [:div
+      [:h2 "Result"]
+      [:p (:value @eval-result)]]]))
 
 ;; about
 

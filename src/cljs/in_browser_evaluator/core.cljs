@@ -6,7 +6,7 @@
    [in-browser-evaluator.routes :as routes]
    [in-browser-evaluator.views :as views]
    [in-browser-evaluator.config :as config]
-   ))
+   [in-browser-evaluator.evaluator :as evaluator]))
 
 
 (defn dev-setup []
@@ -21,6 +21,7 @@
 
 (defn init []
   (routes/app-routes)
+  (evaluator/start)
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
   (mount-root))
