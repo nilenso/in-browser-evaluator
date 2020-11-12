@@ -23,10 +23,28 @@
 (re-frame/reg-event-fx
  :eval
  (fn [{:keys [db] :as cofx} [_ value]]
-   (evaluator/eval! (get-in db [:editor-content])
-                   #(re-frame/dispatch [:set-eval-result %]))))
+   (let [eval-id (str (random-uuid))]
+     (evaluator/eval! eval-id
+                      (get-in db [:editor-content])
+                      #(re-frame/dispatch [:set-eval-result eval-id %]))
+     {})))
+
+(re-frame/reg-event-fx
+ :run-tests
+ (fn [_ [_ eval-id]]
+   (evaluator/run-tests eval-id)
+   {}))
+
+(re-frame/reg-event-fx
+ :set-eval-result
+ (fn [{:keys [db]} [_ eval-id value]]
+   {:db (assoc db
+               :eval-result value
+               :test-results [])
+    :dispatch [:run-tests eval-id]}))
 
 (re-frame/reg-event-db
- :set-eval-result
- (fn [db [_ value]]
-   (assoc db :eval-result value)))
+ :add-test-result
+ (fn [db [_ test result]]
+   (let [test-result (some? (:value result))]
+     (update db :test-results conj (assoc test :result test-result)))))

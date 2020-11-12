@@ -1,7 +1,8 @@
 (ns in-browser-evaluator.evaluator
   (:require [shadow.cljs.bootstrap.browser :as boot]
             [cljs.js :as cljs]
-            [cljs.env :as env]))
+            [cljs.env :as env]
+            [re-frame.core :as re-frame]))
 
 (defonce compile-state-ref (env/default-compiler-env))
 
@@ -10,12 +11,22 @@
     {:path "/bootstrap"}
     #(js/console.log "evaluator initialised")))
 
-(defn eval! [source cb]
+(defn ns-from-id [id]
+  (str "mars-rover.core-" id))
+
+(defn eval! [id source cb]
   (let [options {:eval cljs/js-eval
-                 ;; use the :load function provided by shadow-cljs, which uses the bootstrap build's
-                 ;; index.transit.json file to map namespaces to files.
                  :load (partial boot/load compile-state-ref)}
         f (fn [x] (when (:error x)
                      (js/console.error (ex-cause (:error x))))
             (tap> x) (cb x))]
-    (cljs/eval-str compile-state-ref (str source) "[test]" options f)))
+    (cljs/eval-str compile-state-ref (str "(ns " (ns-from-id id) ")" source) "[test]" options f)))
+
+(def tests
+  [{:prompt "The function foo exists"
+    :assert '(resolve 'foo)}])
+
+(defn run-tests [id]
+  (doall
+   (for [{:keys [assert prompt] :as test} tests]
+     (eval! id (str assert) #(re-frame/dispatch [:add-test-result test %])))))

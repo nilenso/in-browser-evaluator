@@ -21,6 +21,13 @@
                    #_(js/alert (eval (r/read-string value)))
                    nil)}]))
 
+(defn test-results []
+  (let [test-results (re-frame/subscribe [::subs/test-results])]
+    [:ul
+     (for [{:keys [prompt result] :as test} @test-results]
+       ^{:key (str (random-uuid))}
+       [:li (str prompt ": " result)])]))
+
 (defn home-panel []
   (let [eval-result (re-frame/subscribe [::subs/eval-result])]
     [:div
@@ -31,7 +38,10 @@
      [editor]
      [:div
       [:h2 "Result"]
-      [:p (:value @eval-result)]]]))
+      [:p {} (if (nil? (:value @eval-result))
+               "nil"
+               (str (:value @eval-result)))]]
+     [test-results]]))
 
 ;; about
 

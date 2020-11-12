@@ -21,3 +21,8 @@
  ::eval-result
  (fn [db _]
    (:eval-result db)))
+
+(re-frame/reg-sub
+ ::test-results
+ (fn [db _]
+   (:test-results db)))
