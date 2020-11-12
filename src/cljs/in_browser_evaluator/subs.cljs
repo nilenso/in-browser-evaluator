@@ -13,6 +13,6 @@
    (:active-panel db)))
 
 (re-frame/reg-sub
- ::re-pressed-example
+ ::editor-content
  (fn [db _]
-   (:re-pressed-example db)))
+   (:editor-content db)))

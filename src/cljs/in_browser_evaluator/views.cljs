@@ -2,42 +2,26 @@
   (:require
    [re-frame.core :as re-frame]
    [in-browser-evaluator.subs :as subs]
-   ))
-
-
-;; home
-
-(defn display-re-pressed-example []
-  (let [re-pressed-example (re-frame/subscribe [::subs/re-pressed-example])]
-    [:div
-
-     [:p
-      [:span "Re-pressed is listening for keydown events. A message will be displayed when you type "]
-      [:strong [:code "hello"]]
-      [:span ". So go ahead, try it out!"]]
-
-     (when-let [rpe @re-pressed-example]
-       [:div
-        {:style {:padding          "16px"
-                 :background-color "lightgrey"
-                 :border           "solid 1px grey"
-                 :border-radius    "4px"
-                 :margin-top       "16px"
-                 }}
-        rpe])]))
+   ["react-codemirror2" :as codemirror]
+   ["codemirror/mode/clojure/clojure"]
+   [reagent.core :as reagent]
+   [cljs.reader :as r]))
 
 (defn home-panel []
-  (let [name (re-frame/subscribe [::subs/name])]
+  (let [content (re-frame/subscribe [::subs/editor-content])
+        textarea-obj (atom nil)]
     [:div
-     [:h1 (str "Hello from " @name ". This is the Home Page.")]
-
-     [:div
-      [:a {:href "#/about"}
-       "go to About Page"]]
-
-     [display-re-pressed-example]
-     ]))
-
+     [:h1 (str "Hello from " ". This is the Home Page.")]
+     [:a {:href "#/about"} "go to About Page"]
+     [:> (:Controlled (js->clj codemirror :keywordize-keys true))
+      {:value @content
+       :options (clj->js {:mode "clojure"
+                          :lineNumbers true})
+       :on-before-change (fn [_ _ value]
+                           (re-frame/dispatch [:set-editor-content value]))
+       :on-change (fn [ed arg2 value]
+                    #_(js/alert (eval (r/read-string value)))
+                    nil)}]]))
 
 ;; about
 
