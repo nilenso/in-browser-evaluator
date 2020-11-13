@@ -82,10 +82,10 @@
 (defn home-panel []
   [:div.page
    [header]
-   [:p "Press Ctrl/Cmd+Enter to run code."]
    [:div.panes
     [editor]
-    [results]]])
+    [results]]
+   [:p "Press Ctrl/Cmd+Enter to run code. Press F12 to see stdout."]])
 
 ;; about
 
