@@ -4,6 +4,7 @@
    [in-browser-evaluator.subs :as subs]
    ["react-codemirror2" :as codemirror]
    ["codemirror/mode/clojure/clojure"]
+   ["codemirror/keymap/emacs"]
    [reagent.core :as reagent]
    [cljs.reader :as r]))
 
@@ -11,11 +12,14 @@
   (let [content (re-frame/subscribe [::subs/editor-content])]
     [:> (:Controlled (js->clj codemirror :keywordize-keys true))
      {:value @content
-      :options (clj->js {:mode "clojure"
+      :options (clj->js {:mode "text/x-clojurescript"
+                         :keyMap "emacs"
                          :theme "base16-light"
                          :lineNumbers true
                          :extraKeys {"Ctrl-Enter" #(re-frame/dispatch [:eval])
                                      "Cmd-Enter" #(re-frame/dispatch [:eval])}})
+      :editor-did-mount (fn [_]
+                          (re-frame/dispatch [:load-editor-content]))
       :on-before-change (fn [_ _ value]
                           (re-frame/dispatch [:set-editor-content value]))}]))
 

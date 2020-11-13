@@ -18,7 +18,13 @@
 (re-frame/reg-event-db
  :set-editor-content
  (fn [db [_ value]]
+   (.setItem js/localStorage "editor-content" value)
    (assoc db :editor-content value)))
+
+(re-frame/reg-event-db
+ :load-editor-content
+ (fn [db _]
+   (assoc db :editor-content (.getItem js/localStorage "editor-content"))))
 
 (re-frame/reg-event-fx
  :eval
