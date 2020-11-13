@@ -55,14 +55,23 @@
       [:span " | "]
       [:a (if (= @active-panel :home-panel) {} {:href "#/"}) "Solution"]]]))
 
+(defn show-eval-result [eval-result]
+  (cond
+    (some? (:error eval-result))
+    [:code (with-out-str (cljs.pprint/pprint eval-result))]
+
+    (nil? (:value eval-result))
+    "nil"
+
+    :else
+    (str (:value eval-result))))
+
 (defn results []
   (let [eval-result (re-frame/subscribe [::subs/eval-result])]
     [:div.results
      [:div.eval-result
       [:h2 "Eval Result:"]
-      [:p {} (if (nil? (:value @eval-result))
-               "nil"
-               (str (:value @eval-result)))]]
+      [:p {} (show-eval-result @eval-result)]]
      [:div.test-results
       [test-results]]]))
 
