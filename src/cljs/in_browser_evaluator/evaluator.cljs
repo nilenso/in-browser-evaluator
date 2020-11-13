@@ -30,5 +30,5 @@
 (defn run-tests [id]
   (doall
    (for [{:keys [assert prompt] :as test} tests
-         :let [wrapped-assert (str "(try "assert " (catch :default e false))")]]
+         :let [wrapped-assert (str "(try "assert " (catch js/TypeError e false))")]]
      (eval! id (str wrapped-assert) #(re-frame/dispatch [:add-test-result test %])))))

@@ -52,5 +52,5 @@
 (re-frame/reg-event-db
  :add-test-result
  (fn [db [_ test result]]
-   (let [test-result (some? (:value result))]
+   (let [test-result (if (:value result) true false)]
      (update db :test-results conj (assoc test :result test-result)))))
