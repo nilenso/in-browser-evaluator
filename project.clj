@@ -35,7 +35,8 @@
                                           :preloads [devtools.preload]}}
                           :devtools {:http-root "resources/public"
                                      :http-port 8280}
-                          :compiler-options {:optimizations :simple}}
+                          :compiler-options {:optimizations :simple
+                                             :output-wrapper false}}
 
                          :bootstrap-support
                          {:target :bootstrap
@@ -50,7 +51,8 @@
                           :runner-ns shadow.test.browser
                           :test-dir "target/browser-test"
                           :devtools {:http-root "target/browser-test"
-                                     :http-port 8290}}
+                                     :http-port 8290}
+                          :compiler-options {:optimizations :simple}}
 
                          :karma-test
                          {:target :karma
