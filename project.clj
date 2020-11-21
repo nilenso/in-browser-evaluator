@@ -33,21 +33,15 @@
                           :asset-path "/js/compiled"
                           :modules {:app {:init-fn in-browser-evaluator.core/init
                                           :preloads [devtools.preload]}}
-                          :dev {}
-                          :release {}
-
                           :devtools {:http-root "resources/public"
                                      :http-port 8280}
-                          :compiler-options {:optimizations :simple
-                                             :infer-externs :auto}}
+                          :compiler-options {:optimizations :simple}}
 
                          :bootstrap-support
                          {:target :bootstrap
                           :output-dir "resources/public/bootstrap"
                           :exclude #{cljs.js}
                           :entries [cljs.js]
-                          :compiler-options {:optimizations :simple
-                                             :infer-externs :auto}
                           :macros []}
 
                          :browser-test
@@ -80,7 +74,7 @@
                             ["release"]]
 
             "release"      ["with-profile" "prod" "do"
-                            ["shadow" "release" "app"]]
+                            ["shadow" "release" "bootstrap-support" "app"]]
 
             "build-report" ["with-profile" "prod" "do"
                             ["shadow" "run" "shadow.cljs.build-report" "app" "bootstrap-support" "target/build-report.html"]
