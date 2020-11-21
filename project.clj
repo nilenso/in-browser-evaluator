@@ -75,7 +75,7 @@
                             ["shell" "echo" "\"DEPRECATED: Please use lein release instead.\""]
                             ["release"]]
 
-            "release"      ["with-profile" "prod" "do"
+            "release"      ["with-profile" "prod" "do" "clean"
                             ["shadow" "release" "bootstrap-support" "app"]]
 
             "build-report" ["with-profile" "prod" "do"
