@@ -7,12 +7,10 @@
                  [thheller/shadow-cljs "2.11.7"]
                  [reagent "0.10.0"]
                  [re-frame "1.1.2"]
-                 [day8.re-frame/tracing "0.6.0"]
                  [clj-commons/secretary "1.2.4"]
                  [cider/cider-nrepl "0.25.4"]]
 
   :plugins [[lein-shadow "0.3.1"]
-
             [lein-shell "0.5.0"]]
 
   :min-lein-version "2.9.0"
@@ -34,22 +32,22 @@
                           :output-dir "resources/public/js/compiled"
                           :asset-path "/js/compiled"
                           :modules {:app {:init-fn in-browser-evaluator.core/init
-                                          :preloads [devtools.preload
-                                                     day8.re-frame-10x.preload]}}
-                          :dev {:compiler-options {:closure-defines {re-frame.trace.trace-enabled? true
-                                                                     day8.re-frame.tracing.trace-enabled? true}}}
-                          :release {:build-options
-                                    {:ns-aliases
-                                     {day8.re-frame.tracing day8.re-frame.tracing-stubs}}}
+                                          :preloads [devtools.preload]}}
+                          :dev {}
+                          :release {}
 
                           :devtools {:http-root "resources/public"
-                                     :http-port 8280}}
+                                     :http-port 8280}
+                          :compiler-options {:optimizations :simple
+                                             :infer-externs :auto}}
 
                          :bootstrap-support
                          {:target :bootstrap
                           :output-dir "resources/public/bootstrap"
                           :exclude #{cljs.js}
                           :entries [cljs.js]
+                          :compiler-options {:optimizations :simple
+                                             :infer-externs :auto}
                           :macros []}
 
                          :browser-test
@@ -82,7 +80,7 @@
                             ["release"]]
 
             "release"      ["with-profile" "prod" "do"
-                            ["shadow" "release" "app" "bootstrap-support"]]
+                            ["shadow" "release" "app"]]
 
             "build-report" ["with-profile" "prod" "do"
                             ["shadow" "run" "shadow.cljs.build-report" "app" "bootstrap-support" "target/build-report.html"]
@@ -97,8 +95,7 @@
 
   :profiles
   {:dev
-   {:dependencies [[binaryage/devtools "1.0.2"]
-                   [day8.re-frame/re-frame-10x "0.7.0"]]
+   {:dependencies [[binaryage/devtools "1.0.2"]]
     :source-paths ["dev"]}
 
    :prod {}

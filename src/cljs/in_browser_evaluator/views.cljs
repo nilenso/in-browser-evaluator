@@ -6,7 +6,8 @@
    ["codemirror/mode/clojure/clojure"]
    ["codemirror/keymap/emacs"]
    [reagent.core :as reagent]
-   [cljs.reader :as r]))
+   [cljs.reader :as r]
+   [cljs.pprint :as pprint]))
 
 (defn editor []
   (let [content (re-frame/subscribe [::subs/editor-content])]
@@ -62,7 +63,7 @@
 (defn show-eval-result [eval-result]
   (cond
     (some? (:error eval-result))
-    [:code (with-out-str (cljs.pprint/pprint eval-result))]
+    [:code (with-out-str (pprint/pprint eval-result))]
 
     (nil? (:value eval-result))
     "nil"
