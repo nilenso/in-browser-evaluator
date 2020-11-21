@@ -1,0 +1,32 @@
+name: In-Browser-Evaluator
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build the clojurscript app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Cache lein deps
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-lein-deps
+        with:
+          path: ~/.m2
+          key: ${{ env.cache-name }}-${{ hashFiles('**/project.clj') }}
+          restore-keys: |
+            ${{ env.cache-name }}-
+
+      - name: Create build
+        run: lein release
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./resources/public
