@@ -10,6 +10,9 @@
    {:prompt       "Moves nowhere for input: 5 5 0 0 N LLLL"
     :assert       '(= (navigate "5 5 0 0 N LLLL") [0 0 "N"])
     :error-output "Expected output: [0 0 \"N\"]"}
+   {:prompt       "Doesn't fall off the grid for input: 5 5 0 0 N MMMMMMMMMM"
+    :assert       '(= (navigate "5 5 0 0 N MMMMMMMMMM") [0 5 "N"])
+    :error-output "Expected output: [0 0 \"N\"]"}
    {:prompt       "Moves far away for input: 5 5 1 2 N LMLMLMLMM"
     :assert       '(= (navigate "5 5 1 2 N LMLMLMLMM") [1 3 "N"])
     :error-output "Expected output: [1 2 \"N\"]"}])
