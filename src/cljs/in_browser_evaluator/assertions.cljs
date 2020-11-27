@@ -7,8 +7,14 @@
    {:prompt       "Moves one block for input: 5 5 0 0 N M"
     :assert       '(= (navigate "5 5 0 0 N M") [0 1 "N"])
     :error-output "Expected output: [0 1 \"N\"]"}
-   {:prompt       "Moves nowhere for input: 5 5 0 0 N LLLL"
-    :assert       '(= (navigate "5 5 0 0 N LLLL") [0 0 "N"])
+   {:prompt       "Turn left for input: 5 5 0 0 N L"
+    :assert       '(= (navigate "5 5 0 0 N L") [0 0 "W"])
+    :error-output "Expected output: [0 0 \"W\"]"}
+   {:prompt       "Turn Right for input: 5 5 0 0 N R"
+    :assert       '(= (navigate "5 5 0 0 N L") [0 0 "E"])
+    :error-output "Expected output: [0 0 \"E\"]"}
+   {:prompt       "Moves nowhere for input: 5 5 0 0 N LR"
+    :assert       '(= (navigate "5 5 0 0 N LR") [0 0 "N"])
     :error-output "Expected output: [0 0 \"N\"]"}
    {:prompt       "Doesn't fall off the grid for input: 5 5 0 0 N MMMMMMMMMM"
     :assert       '(= (navigate "5 5 0 0 N MMMMMMMMMM") [0 5 "N"])
