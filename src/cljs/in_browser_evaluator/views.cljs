@@ -51,8 +51,7 @@
          (str prompt ": " (if (true? result) "passed" "failed"))])]]))
 
 (defn problem-chooser []
-  (let [active-problem (re-frame/subscribe [::subs/active-problem])
-        active-panel (re-frame/subscribe [::subs/active-panel])]
+  (let [active-problem (re-frame/subscribe [::subs/active-problem])]
     [:div.problem-chooser
      [:label {:for "problem-chooser"} "Choose a problem: "]
      [:select {:id "problem-chooser"
@@ -92,9 +91,8 @@
      [:div.test-results
       [test-results problem]]]))
 
-(defn main-panel []
+(defn page []
   (let [active-problem (re-frame/subscribe [::subs/active-problem])
-        active-panel (re-frame/subscribe [::subs/active-panel])
         problem-collapsed? (re-frame/subscribe [::subs/problem-collapsed?])
         problem (problems/find-problem @active-problem)]
     [:div.page

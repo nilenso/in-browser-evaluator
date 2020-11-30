@@ -10,11 +10,6 @@
    db/default-db))
 
 (re-frame/reg-event-db
- ::set-active-panel
- (fn [db [_ active-panel]]
-   (assoc db :active-panel active-panel)))
-
-(re-frame/reg-event-db
  :set-active-problem
  (fn [db [_ active-problem]]
    (assoc db :active-problem active-problem)))

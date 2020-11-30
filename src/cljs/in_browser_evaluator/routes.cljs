@@ -22,11 +22,7 @@
   ;; --------------------
   ;; define routes here
   (defroute "/" []
-    (re-frame/dispatch [::events/set-active-panel :editor]))
-
-  (defroute "/problem-statement" []
-    (re-frame/dispatch [::events/set-active-panel :problem-statement]))
-
+    nil)
 
   ;; --------------------
   (hook-browser-navigation!))
