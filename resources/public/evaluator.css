@@ -33,6 +33,12 @@ h2 {
   margin-top: 20px;
 }
 
+.problem-statement {
+  border-bottom: 1px dashed #f8337d;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
 .header img {
   height: 50px;
   margin-right: 10px;
@@ -40,6 +46,10 @@ h2 {
 
 .navigation {
   margin-bottom: 20px;
+}
+
+.collapser {
+  margin-left: 10px;
 }
 
 .panes {

@@ -20,6 +20,16 @@
    (assoc db :active-problem active-problem)))
 
 (re-frame/reg-event-db
+ :expand-problem
+ (fn [db _]
+   (assoc db :problem-collapsed? false)))
+
+(re-frame/reg-event-db
+ :collapse-problem
+ (fn [db _]
+   (assoc db :problem-collapsed? true)))
+
+(re-frame/reg-event-db
  :set-editor-content
  (fn [db [_ problem value]]
    (.setItem js/localStorage (str problem "-editor-content") value)

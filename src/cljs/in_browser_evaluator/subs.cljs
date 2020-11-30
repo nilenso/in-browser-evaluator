@@ -18,6 +18,11 @@
    (:active-problem db)))
 
 (re-frame/reg-sub
+ ::problem-collapsed?
+ (fn [db _]
+   (:problem-collapsed? db)))
+
+(re-frame/reg-sub
  ::editor-content
  (fn [{:keys [active-problem] :as db} _]
    (get-in db [active-problem :editor-content])))

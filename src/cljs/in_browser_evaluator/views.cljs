@@ -95,18 +95,23 @@
 (defn main-panel []
   (let [active-problem (re-frame/subscribe [::subs/active-problem])
         active-panel (re-frame/subscribe [::subs/active-panel])
+        problem-collapsed? (re-frame/subscribe [::subs/problem-collapsed?])
         problem (problems/find-problem @active-problem)]
     [:div.page
      [header]
      [:div.problem
-      [:h2 (:display-name problem)]
-      [:div.navigation
-       [:a (if (= @active-panel :problem-statement) {} {:href "#/problem-statement"}) "Problem"]
-       [:span " | "]
-       [:a (if (= @active-panel :editor) {} {:href "#/"}) "Solution"]]
-      (case @active-panel
-        :editor [:div [:div.panes
-                           [editor @active-problem]
-                           [results @active-problem]]
-                     [:p "Press Ctrl/Cmd+Enter to run code. Press F12 to see stdout."]]
-        :problem-statement [(:problem-statement problem)])]]))
+      [:h2 (:display-name problem)
+       (if @problem-collapsed?
+         [:a.collapser {:href "" :on-click #(do (re-frame/dispatch [:expand-problem])
+                                                (.preventDefault %))}
+          "[...]"]
+         [:a.collapser {:href "" :on-click  #(do (re-frame/dispatch [:collapse-problem])
+                                                 (.preventDefault %))}
+          "[–]"])]
+      (when-not @problem-collapsed?
+        [(:problem-statement problem)])
+      [:div
+       [:div.panes
+        [editor @active-problem]
+        [results @active-problem]]
+       [:p "Press Ctrl/Cmd+Enter to run code. Press F12 to see stdout."]]]]))
