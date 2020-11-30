@@ -36,7 +36,7 @@ In order to control a rover, NASA sends a simple string of letters. The possible
    [:div
     [:strong "Input:"]
     [:br]
-    [:p "The first line of input is the upper-right coordinates of the plateau, the lower-left coordinates are assumed to be 0,0. The rest of the input is information pertaining to the rovers that have been deployed. Each rover has two lines of input. The first line gives the rover's position, and the second line is a series of instructions telling the rover how to explore the plateau. The position is made up of two integers and a letter separated by spaces, corresponding to the x and y coordinates and the rover's orientation. Each rover will be finished sequentially, which means that the second rover won't start to move until the first one has finished moving."]]
+    [:p "The first 2 numbers are the upper-right coordinates of the plateau, the lower-left coordinates are assumed to be 0,0. The next 3 inputs are information pertaining to the rover coordinates, and it's current orientation. After that is a series of instructions telling the rover how to explore the plateau."]]
    [:p
     [:strong "Output:"]
     [:br]
