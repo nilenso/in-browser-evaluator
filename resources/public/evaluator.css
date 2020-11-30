@@ -24,11 +24,6 @@ h2 {
   align-items: center;
 }
 
-.problem-chooser {
-  border-bottom: 1px dashed #f8337d;
-  padding-bottom: 20px;
-}
-
 .problem {
   margin-top: 20px;
 }
@@ -42,6 +37,15 @@ h2 {
 .header img {
   height: 50px;
   margin-right: 10px;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed #f8337d;
+  padding-bottom: 20px;
 }
 
 .navigation {

@@ -69,7 +69,12 @@
    [:div.header
     [:img {:src "https://nilenso.com/nilenso-200.png"}]
     [:h1 "nilenso/mars-rover"]]
-   [problem-chooser]])
+   [:div.header-container
+    [problem-chooser]
+    [:a.link-to-primer
+     {:href "https://gist.github.com/sezaljain/b3daea74ff6f59790b0f669fbf2105ff"
+      :target "_blank"}
+     "Clojure primer"]]])
 
 (defn show-eval-result [problem eval-result]
   (cond
