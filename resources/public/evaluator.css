@@ -24,6 +24,14 @@ h2 {
   align-items: center;
 }
 
+.problem-chooser {
+  border-bottom: 1px dashed #f8337d;
+}
+
+.problem {
+  margin-top: 20px;
+}
+
 .header img {
   height: 50px;
   margin-right: 10px;

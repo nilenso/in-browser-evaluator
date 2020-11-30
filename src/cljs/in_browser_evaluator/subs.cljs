@@ -13,16 +13,21 @@
    (:active-panel db)))
 
 (re-frame/reg-sub
- ::editor-content
+ ::active-problem
  (fn [db _]
-   (:editor-content db)))
+   (:active-problem db)))
+
+(re-frame/reg-sub
+ ::editor-content
+ (fn [{:keys [active-problem] :as db} _]
+   (get-in db [active-problem :editor-content])))
 
 (re-frame/reg-sub
  ::eval-result
- (fn [db _]
-   (:eval-result db)))
+ (fn [{:keys [active-problem] :as db} _]
+   (get-in db [active-problem :eval-result])))
 
 (re-frame/reg-sub
  ::test-results
- (fn [db _]
-   (:test-results db)))
+ (fn [{:keys [active-problem] :as db} _]
+   (get-in db [active-problem :test-results])))

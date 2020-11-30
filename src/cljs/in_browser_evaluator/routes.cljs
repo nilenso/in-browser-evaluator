@@ -22,10 +22,10 @@
   ;; --------------------
   ;; define routes here
   (defroute "/" []
-    (re-frame/dispatch [::events/set-active-panel :home-panel]))
+    (re-frame/dispatch [::events/set-active-panel :editor]))
 
-  (defroute "/problem" []
-    (re-frame/dispatch [::events/set-active-panel :problem]))
+  (defroute "/problem-statement" []
+    (re-frame/dispatch [::events/set-active-panel :problem-statement]))
 
 
   ;; --------------------

@@ -1,9 +1,9 @@
 (ns in-browser-evaluator.evaluator
-  (:require [shadow.cljs.bootstrap.browser :as boot]
+  (:require [cljs.env :as env]
             [cljs.js :as cljs]
-            [cljs.env :as env]
+            [in-browser-evaluator.problems :as problems]
             [re-frame.core :as re-frame]
-            [in-browser-evaluator.assertions :refer [tests]]))
+            [shadow.cljs.bootstrap.browser :as boot]))
 
 (defonce compile-state-ref (env/default-compiler-env))
 
@@ -23,8 +23,9 @@
             (tap> x) (cb x))]
     (cljs/eval-str compile-state-ref (str "(ns " (ns-from-id id) ")" source) "[test]" options f)))
 
-(defn run-tests [id]
+
+(defn run-tests [problem id]
   (doall
-   (for [{:keys [assert prompt] :as test} tests
+   (for [{:keys [assert prompt] :as test} (:tests (problems/find-problem problem))
          :let [wrapped-assert (str "(try "assert " (catch js/TypeError e false))")]]
-     (eval! id (str wrapped-assert) #(re-frame/dispatch [:add-test-result test %])))))
+     (eval! id (str wrapped-assert) #(re-frame/dispatch [:add-test-result problem test %])))))

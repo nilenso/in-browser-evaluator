@@ -7,9 +7,10 @@
    ["codemirror/keymap/emacs"]
    [reagent.core :as reagent]
    [cljs.reader :as r]
-   [cljs.pprint :as pprint]))
+   [cljs.pprint :as pprint]
+   [in-browser-evaluator.problems :as problems]))
 
-(defn editor []
+(defn editor [problem]
   (let [content (re-frame/subscribe [::subs/editor-content])]
     [:> (:Controlled (js->clj codemirror :keywordize-keys true))
      {:value @content
@@ -20,9 +21,9 @@
                          :extraKeys {"Ctrl-Enter" #(re-frame/dispatch [:eval])
                                      "Cmd-Enter" #(re-frame/dispatch [:eval])}})
       :editor-did-mount (fn [_]
-                          (re-frame/dispatch [:load-editor-content]))
+                          (re-frame/dispatch [:load-editor-content problem]))
       :on-before-change (fn [_ _ value]
-                          (re-frame/dispatch [:set-editor-content value]))}]))
+                          (re-frame/dispatch [:set-editor-content problem value]))}]))
 
 (defn progress-bar [test-results]
   (let [total (count test-results)
@@ -37,7 +38,7 @@
                   :border-color red
                   :width (str (* 99 (/ (- total passed) total)) "%")}}]]))
 
-(defn test-results []
+(defn test-results [problem]
   (let [test-results (re-frame/subscribe [::subs/test-results])]
     [:div
      [:h2 "Test Results:"]
@@ -47,20 +48,31 @@
         ^{:key (str (random-uuid))}
         [:li.fade-in
          {:class (if (true? result) "green" "red")}
-         (str prompt ": " result)])]]))
+         prompt])]]))
+
+(defn problem-chooser []
+  (let [active-problem (re-frame/subscribe [::subs/active-problem])
+        active-panel (re-frame/subscribe [::subs/active-panel])]
+    [:div.problem-chooser
+     [:label {:for "problem-chooser"} "Choose a problem: "]
+     [:select {:id "problem-chooser"
+               :value (or @active-problem (:name (first problems/problems)))
+               :on-change (fn [this] (re-frame/dispatch [:set-active-problem (keyword (.. this -target -value))]))}
+      (doall
+       (for [[i problem] (mapv (fn [n p] [n p]) (range) problems/problems)]
+         ^{:key (str (random-uuid))}
+         [:option
+          {:value (:name problem)}
+          (str (inc i) ": " (:display-name problem))]))]]))
 
 (defn header []
-  (let [active-panel (re-frame/subscribe [::subs/active-panel])]
-    [:div
-     [:div.header
-      [:img {:src "https://nilenso.com/nilenso-200.png"}]
-      [:h1 "nilenso/mars-rover"]]
-     [:div.navigation
-      [:a (if (= @active-panel :problem) {} {:href "#/problem"}) "Problem"]
-      [:span " | "]
-      [:a (if (= @active-panel :home-panel) {} {:href "#/"}) "Solution"]]]))
+  [:div
+   [:div.header
+    [:img {:src "https://nilenso.com/nilenso-200.png"}]
+    [:h1 "nilenso/mars-rover"]]
+   [problem-chooser]])
 
-(defn show-eval-result [eval-result]
+(defn show-eval-result [problem eval-result]
   (cond
     (some? (:error eval-result))
     [:code (with-out-str (pprint/pprint eval-result))]
@@ -71,63 +83,30 @@
     :else
     (str (:value eval-result))))
 
-(defn results []
+(defn results [problem]
   (let [eval-result (re-frame/subscribe [::subs/eval-result])]
     [:div.results
      [:div.eval-result
       [:h2 "Eval Result:"]
-      [:p {} (show-eval-result @eval-result)]]
+      [:p {} (show-eval-result problem @eval-result)]]
      [:div.test-results
-      [test-results]]]))
-
-(defn home-panel []
-  [:div.page
-   [header]
-   [:div.panes
-    [editor]
-    [results]]
-   [:p "Press Ctrl/Cmd+Enter to run code. Press F12 to see stdout."]])
-
-;; about
-
-(defn problem-statement []
-  [:div.page
-   [header]
-   [:h2 "Problem Statement"]
-   [:i "A squad of robotic rovers are to be landed by NASA on a plateau on Mars."]
-   [:p "This plateau, which is curiously rectangular, must be navigated by the rovers so that their on board cameras can get a complete view of the surrounding terrain to send back to Earth.
-A rover's position is represented by a combination of an x and y coordinates and a letter representing one of the four cardinal compass points. The plateau is divided up into a grid to simplify navigation. An example position might be 0, 0, N, which means the rover is in the bottom left corner and facing North.
-In order to control a rover, NASA sends a simple string of letters. The possible letters are 'L', 'R' and 'M'. 'L' and 'R' makes the rover spin 90 degrees left or right respectively, without moving from its current spot."]
-   [:p
-    "'M' means move forward one grid point, and maintain the same heading."
-    [:br]
-    "Assume that the square directly North from (x, y) is (x, y+1). "]
-   [:p
-    [:strong "Input:"]
-    [:br]
-    [:p "The first line of input is the upper-right coordinates of the plateau, the lower-left coordinates are assumed to be 0,0. The rest of the input is information pertaining to the rovers that have been deployed. Each rover has two lines of input. The first line gives the rover's position, and the second line is a series of instructions telling the rover how to explore the plateau. The position is made up of two integers and a letter separated by spaces, corresponding to the x and y coordinates and the rover's orientation. Each rover will be finished sequentially, which means that the second rover won't start to move until the first one has finished moving."]]
-   [:p
-    [:strong "Output:"]
-    [:br]
-    [:p "The output for each rover should be its final coordinates and heading."]]
-   [:ul "Test Inputs:"
-    [:li "5 5 1 2 N LMLMLMLMM"]
-    [:li "5 5 3 3 E MMRMMRMRRM"]]
-   [:ul "Expected Outputs:"
-    [:li "1 3 N"]
-    [:li "5 1 E "]]])
-
-;; main
-
-(defn- panels [panel-name]
-  (case panel-name
-    :home-panel [home-panel]
-    :problem [problem-statement]
-    [:div]))
-
-(defn show-panel [panel-name]
-  [panels panel-name])
+      [test-results problem]]]))
 
 (defn main-panel []
-  (let [active-panel (re-frame/subscribe [::subs/active-panel])]
-    [show-panel @active-panel]))
+  (let [active-problem (re-frame/subscribe [::subs/active-problem])
+        active-panel (re-frame/subscribe [::subs/active-panel])
+        problem (problems/find-problem @active-problem)]
+    [:div.page
+     [header]
+     [:div.problem
+      [:h2 (:display-name problem)]
+      [:div.navigation
+       [:a (if (= @active-panel :problem-statement) {} {:href "#/problem-statement"}) "Problem"]
+       [:span " | "]
+       [:a (if (= @active-panel :editor) {} {:href "#/"}) "Solution"]]
+      (case @active-panel
+        :editor [:div [:div.panes
+                           [editor @active-problem]
+                           [results @active-problem]]
+                     [:p "Press Ctrl/Cmd+Enter to run code. Press F12 to see stdout."]]
+        :problem-statement [(:problem-statement problem)])]]))
