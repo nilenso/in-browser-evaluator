@@ -13,7 +13,7 @@
     #(js/console.log "evaluator initialised")))
 
 (defn ns-from-id [id]
-  (str "mars-rover.core-" id))
+  (str "candidate-eval.core-" id))
 
 (defn eval! [id source cb]
   (let [options {:eval cljs/js-eval

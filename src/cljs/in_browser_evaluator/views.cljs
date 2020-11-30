@@ -48,7 +48,7 @@
         ^{:key (str (random-uuid))}
         [:li.fade-in
          {:class (if (true? result) "green" "red")}
-         prompt])]]))
+         (str prompt ": " (if (true? result) "passed" "failed"))])]]))
 
 (defn problem-chooser []
   (let [active-problem (re-frame/subscribe [::subs/active-problem])
