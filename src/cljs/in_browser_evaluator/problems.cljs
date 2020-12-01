@@ -50,19 +50,19 @@ In order to control a rover, NASA sends a simple string of letters. The possible
 
 (defn multiply-by-10-problem-statement []
   [:div.problem-statement
-   [:p "Write a function called multiply-by-10 that takes a single argument and multiplies it by 10."]])
+   [:p "Write a function called `multiply-by-10` that takes a single argument and multiplies it by 10."]])
 
 (defn filter-even-strings-problem-statement []
   [:div.problem-statement
-   [:p "Write a function to filter all strings of even length in a given vector."]])
+   [:p "Write a function called `filter-even-strings` to filter all strings of even length in a given vector."]])
 
 (defn capitalize-even-strings-problem-statement []
   [:div.problem-statement
-   [:p "Write a function to capitalize all strings of even length in a given vector. The function should also remove any strings of odd length."]])
+   [:p "Write a function called `capitalize-even-strings` to capitalize all strings of even length in a given vector. The function should also remove any strings of odd length."]])
 
 (defn concat-string-problem-statement []
   [:div.problem-statement
-   [:p "Write a function called `concat-string` using the function `reduce`, that takes in a vector of strings and concatenates them."]])
+   [:p "Write a function called `concat-strings` using the function `reduce`, that takes in a vector of strings and concatenates them."]])
 
 (defn map-by-reduce-problem-statement []
   [:div.problem-statement
@@ -135,17 +135,13 @@ In order to control a rover, NASA sends a simple string of letters. The possible
     "capitalize-even-strings"
     '(resolve 'capitalize-even-strings))
 
-   {:prompt       "Keep the string 'even'"
-    :assert       '(= ["even"] (filter-even-strings ["even"]))
-    :error-output "The string 'even' is not present in the output"}
+   {:prompt       "Keep the string 'even', removes 'odd', and capitalizes to 'Even'"
+    :assert       '(= ["Even"] (capitalize-even-strings ["even" "odd"]))
+    :error-output "The string 'Even' is not present in the output"}
 
-   {:prompt       "Keep the string 'even' and removes 'odd'"
-    :assert       '(= ["even"] (filter-even-strings ["even" "odd"]))
-    :error-output "The string 'even' is not present in the output"}
-
-   {:prompt       "Keep the string 'even' and 'same' removes 'odd'"
-    :assert       '(= ["even" "same"] (filter-even-strings ["even" "odd" "same"]))
-    :error-output (str "Expected output: " ["even" "same"])}])
+   {:prompt       "Keep the string 'Even' and 'Same' removes 'odd'"
+    :assert       '(= ["Even" "Same"] (capitalize-even-strings ["even" "odd" "same"]))
+    :error-output (str "Expected output: " ["Even" "Same"])}])
 
 (def concat-string-tests
   [(assertion-for-function-exists
