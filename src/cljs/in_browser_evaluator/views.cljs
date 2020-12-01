@@ -68,7 +68,7 @@
   [:div
    [:div.header
     [:img {:src "https://nilenso.com/nilenso-200.png"}]
-    [:h1 "nilenso/mars-rover"]]
+    [:h1 "nilenso/evaluator"]]
    [:div.header-container
     [problem-chooser]
     [:a.link-to-primer
