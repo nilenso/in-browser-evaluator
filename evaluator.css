@@ -78,6 +78,14 @@ h2 {
   margin-bottom: 40px;
 }
 
+.questions li {
+  margin: 40px 0;
+}
+
+.question {
+  font-weight: bold;
+}
+
 .progress-bar {
   display: flex;
   flex-direction: row;
