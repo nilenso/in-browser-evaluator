@@ -50,19 +50,23 @@ In order to control a rover, NASA sends a simple string of letters. The possible
 
 (defn multiply-by-10-problem-statement []
   [:div.problem-statement
-   [:p "Write a function called `multiply-by-10` that takes a single argument and multiplies it by 10."]])
+   [:p "Write a function called `multiply-by-10` that takes a single argument and multiplies it by 10."]
+   [:em "To test: (= 240 (multiply-by-10 24))"]])
 
 (defn filter-even-strings-problem-statement []
   [:div.problem-statement
-   [:p "Write a function called `filter-even-strings` to filter all strings of even length in a given vector."]])
+   [:p "Write a function called `filter-even-strings` to filter all strings of even length in a given vector."]
+   [:em "Hint: lookup `even?`"]])
 
 (defn capitalize-even-strings-problem-statement []
   [:div.problem-statement
-   [:p "Write a function called `capitalize-even-strings` to capitalize all strings of even length in a given vector. The function should also remove any strings of odd length."]])
+   [:p "Write a function called `capitalize-even-strings` to capitalize all strings of even length in a given vector. The function should also remove any strings of odd length."]
+   [:em "Hint: lookup functions in `clojure.string` | (= [\"Mumbai\"] (capitalize-even-strings [\"india\" \"goa\" \"mumbai\"]))"]])
 
 (defn concat-string-problem-statement []
   [:div.problem-statement
-   [:p "Write a function called `concat-strings` using the function `reduce`, that takes in a vector of strings and concatenates them."]])
+   [:p "Write a function called `concat-strings` using the function `reduce`, that takes in a vector of strings and concatenates them."]
+   [:em "To test: (= \"jack-n-jill\" (concat-strings [\"jack\" \"-n-\" \"jill\"]))"]])
 
 (defn map-by-reduce-problem-statement []
   [:div.problem-statement
