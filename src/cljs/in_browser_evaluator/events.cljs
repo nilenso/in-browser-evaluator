@@ -10,6 +10,11 @@
    db/default-db))
 
 (re-frame/reg-event-db
+ :set-active-page
+ (fn [db [_ page]]
+   (assoc db :active-page page)))
+
+(re-frame/reg-event-db
  :set-active-problem
  (fn [db [_ active-problem]]
    (assoc db :active-problem active-problem)))

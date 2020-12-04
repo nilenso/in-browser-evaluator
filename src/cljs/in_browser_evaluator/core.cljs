@@ -17,7 +17,7 @@
   (re-frame/clear-subscription-cache!)
   (let [root-el (.getElementById js/document "app")]
     (rdom/unmount-component-at-node root-el)
-    (rdom/render [views/page] root-el)))
+    (rdom/render [views/main] root-el)))
 
 (defn init []
   (routes/app-routes)
