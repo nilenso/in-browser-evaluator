@@ -42,7 +42,7 @@
 
 (re-frame/reg-event-fx
  :eval
- (fn [{:keys [db] :as cofx} [_ value]]
+ (fn [{:keys [db] :as cofx} _]
    (let [eval-id (str (random-uuid))
          active-problem (:active-problem db)]
      (evaluator/eval! eval-id

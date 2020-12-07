@@ -98,7 +98,10 @@
     "nil"
 
     :else
-    (str (:value eval-result))))
+    (try
+      (str (:value eval-result))
+      (catch js/TypeError e
+        (str e)))))
 
 (defn results [problem]
   (let [eval-result (re-frame/subscribe [::subs/eval-result])]
